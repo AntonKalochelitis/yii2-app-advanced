@@ -24,10 +24,10 @@ prod:
 	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii migrate --interactive=0'
 	#docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii_test migrate --interactive=0'
 
-frontend:
+ssh-frontend:
 	docker exec -it anton-kalochelitis-frontend-yii2 bash
 
-backend:
+ssh-backend:
 	docker exec -it anton-kalochelitis-backend-yii2 bash
 
 stop:

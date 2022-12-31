@@ -58,3 +58,28 @@ frontend
 vendor/                  contains dependent 3rd-party packages
 environments/            contains environment-based overrides
 ```
+
+For start project need run: 
+```
+# sudo make
+```
+
+For ssh to frontend
+```
+sudo make ssh-frontend
+```
+
+For ssh to backend
+```
+sudo make ssh-backend
+```
+
+For stop project need run:
+```
+# sudo make stop
+```
+
+For remove all container need run:
+```
+# sudo make rm
+```
