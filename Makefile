@@ -8,8 +8,7 @@ up:
 	docker exec -t anton-kalochelitis-frontend-yii2 bash -c 'composer install'
 	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii cache/flush-all'
 	sleep 60
-	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii migrate --interactive=0'
-	#docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii_test migrate --interactive=0'
+	sudo make migrate
 
 prod:
 	mkdir -p ./.docker/mysql
@@ -21,8 +20,23 @@ prod:
 	docker exec -t anton-kalochelitis-frontend-yii2 bash -c 'composer install'
 	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii cache/flush-all'
 	sleep 60
+	sudo make migrate
+
+preprod:
+	mkdir -p ./.docker/mysql
+	docker network create anton-kalochelitis-network || docker-compose \
+		-f ./docker-compose.yml \
+		--env-file=./.env.preprod \
+		up -d --build --remove-orphans
+	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/init --env=Production --overwrite=y'
+	docker exec -t anton-kalochelitis-frontend-yii2 bash -c 'composer install'
+	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii cache/flush-all'
+	sleep 60
+	sudo make migrate
+
+migrate:
 	docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii migrate --interactive=0'
-	#docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii_test migrate --interactive=0'
+    #docker exec -t anton-kalochelitis-frontend-yii2 bash -c '/app/yii_test migrate --interactive=0'
 
 ssh-frontend:
 	docker exec -it anton-kalochelitis-frontend-yii2 bash
