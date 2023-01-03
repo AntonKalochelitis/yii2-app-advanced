@@ -3,18 +3,18 @@ version: '3.2'
 # Создаем общую сеть проекта, для всех контейнеров
 # Create a general project network for all containers
 networks:
-  anton-kalochelitis-network:
+  ${APP_PROJECT_NAME}-yii2-network:
     driver: bridge
     external: true
 
 services:
   frontend:
-    container_name: anton-kalochelitis-frontend-yii2
+    container_name: ${APP_PROJECT_NAME}-frontend
     build: frontend
     # Подключаем к общей сети проекта с другими контейнерами
     # Connect to the general network of the project with other containers
     networks:
-      - anton-kalochelitis-network
+      - ${APP_PROJECT_NAME}-yii2-network
     ports:
       - "${FRONTEND_PORT}:80"
     depends_on:
@@ -27,12 +27,12 @@ services:
     restart: always
 
   backend:
-    container_name: anton-kalochelitis-backend-yii2
+    container_name: ${APP_PROJECT_NAME}-backend
     build: backend
     # Подключаем к общей сети проекта с другими контейнерами
     # Connect to the general network of the project with other containers
     networks:
-      - anton-kalochelitis-network
+      - ${APP_PROJECT_NAME}-yii2-network
     ports:
       - "${BACKEND_PORT}:80"
     depends_on:
@@ -45,12 +45,12 @@ services:
     restart: always
 
   mysql:
-    container_name: anton-kalochelitis-mysql
+    container_name: ${APP_PROJECT_NAME}-mysql
     image: mysql:5.7
     # Подключаем к общей сети проекта с другими контейнерами
     # Connect to the general network of the project with other containers
     networks:
-      - anton-kalochelitis-network
+      - ${APP_PROJECT_NAME}-yii2-network
     ports:
       - "${MYSQL_EXTERNAL_PORT}:3306"
     environment:
@@ -63,14 +63,14 @@ services:
     restart: always
 
   phpmyadmin:
-    container_name: anton-kalochelitis-phpmyadmin
+    container_name: ${APP_PROJECT_NAME}-phpmyadmin
     image: phpmyadmin/phpmyadmin
     ports:
-      - '${PHPMYADMIN_PORT}:80'
+      - '${PHPMYADMIN_EXTERNAL_PORT}:80'
     # Подключаем к общей сети проекта с другими контейнерами
     # Connect to the general network of the project with other containers
     networks:
-      - anton-kalochelitis-network
+      - ${APP_PROJECT_NAME}-yii2-network
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=mysql
@@ -79,14 +79,14 @@ services:
     restart: always
 
   redis:
+    container_name: ${APP_PROJECT_NAME}-redis
     image: bitnami/redis
-    container_name: anton-kalochelitis-redis
     # Подключаем к общей сети проекта с другими контейнерами
     # Connect to the general network of the project with other containers
     networks:
-      - anton-kalochelitis-network
+      - ${APP_PROJECT_NAME}-yii2-network
     ports:
-      - "6380:6379"
+      - "${REDIS_EXTERNAL_PORT}:6379"
     depends_on:
       - mysql
     environment:
