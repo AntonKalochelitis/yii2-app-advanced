@@ -1,5 +1,7 @@
 <?php
 
+defined('START_SCRIPT') or define('START_SCRIPT', microtime(true));
+
 defined('DEFAULT_PATH') or define('DEFAULT_PATH', realpath(dirname(__FILE__)));
 defined('DOTENV_PATH') or define('DOTENV_PATH', DEFAULT_PATH . DIRECTORY_SEPARATOR);
 defined('DOTENV_FILE') or define('DOTENV_FILE', '.env.local');
